@@ -9,14 +9,20 @@ namespace nihil::graphics {
 	template<typename T, vk::BufferUsageFlagBits usageT>
 	Buffer<T, usageT>::Buffer(Engine* _engine, std::vector<T>& _Data, vk::BufferUsageFlagBits _usage)
 	{
+		std::cout<<"Buffer Constructor Called"<<std::endl;
+
 		engine = _engine;
 		usage = _usage;
 		Data = _Data;
 
 		if ((int)usageT != 0) usage = usageT;
+		std::cout<<"Creating the vulkan buffer"<<std::endl;
 		buffer = Memory::CreateBuffer(sizeof(T) * Data.size(), usage, engine);
+		std::cout<<"Getting memory location"<<std::endl;
 		void* memoryLocation = engine->get->logicalDevice->mapMemory(buffer.memory, 0, sizeof(T) * Data.size());
+		std::cout<<"Copying mem to GPU"<<std::endl;
 		memcpy(memoryLocation, Data.data(), sizeof(T) * Data.size());
+		std::cout<<"Data cpy successful"<<std::endl;
 		engine->get->logicalDevice->unmapMemory(buffer.memory);
 	}
 	template<typename T, vk::BufferUsageFlagBits usageT>

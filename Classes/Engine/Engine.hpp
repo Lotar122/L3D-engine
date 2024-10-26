@@ -56,6 +56,8 @@ namespace nihil::graphics {
 
 	};
 
+    class Renderer;
+
 	class Engine
 	{
 		friend class Renderer;

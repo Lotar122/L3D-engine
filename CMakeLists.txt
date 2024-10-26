@@ -28,7 +28,7 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lib)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/nstd)
 
 target_link_libraries(nihil-render PUBLIC
-	nstd
+	libnstd
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

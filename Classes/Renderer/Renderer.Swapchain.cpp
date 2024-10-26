@@ -22,7 +22,7 @@ namespace nihil::graphics {
 				break;
 			}
 		}
-		if (!set1) { if (support.formats.size() > 0) { surfaceFormat = support.formats[0]; } else { throw std::exception("Couldn't find a supported surface format."); } }
+		if (!set1) { if (support.formats.size() > 0) { surfaceFormat = support.formats[0]; } else { throw std::runtime_error("Couldn't find a supported surface format."); } }
 
 		bool set2 = false;
 		for (const vk::PresentModeKHR& pForm : support.presentModes)
@@ -97,7 +97,7 @@ namespace nihil::graphics {
 			swapchainBundle.swapchain = engine->logicalDevice.createSwapchainKHR(createInfo);
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 
 		swapchainBundle.format = createInfo.imageFormat;
@@ -151,7 +151,7 @@ namespace nihil::graphics {
 			commandPool = engine->logicalDevice.createCommandPool(commandPoolInfo);
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 	}
 
@@ -168,14 +168,14 @@ namespace nihil::graphics {
 				frame.imageAvailable = engine->logicalDevice.createSemaphore(semaphoreCreateInfo);
 			}
 			catch (vk::SystemError err) {
-				throw std::exception(err.what());
+				throw std::runtime_error(err.what());
 			}
 
 			try {
 				frame.renderFinished = engine->logicalDevice.createSemaphore(semaphoreCreateInfo);
 			}
 			catch (vk::SystemError err) {
-				throw std::exception(err.what());
+				throw std::runtime_error(err.what());
 			}
 
 			//create a fence
@@ -186,7 +186,7 @@ namespace nihil::graphics {
 				frame.inFlightFence = engine->logicalDevice.createFence(fenceCreateInfo);
 			}
 			catch (vk::SystemError err) {
-				std::exception(err.what());
+				std::runtime_error(err.what());
 			}
 		}
 	}
@@ -205,7 +205,7 @@ namespace nihil::graphics {
 				swapchainBundle.frames[i].commandBuffer = engine->logicalDevice.allocateCommandBuffers(commandBufferAllocInfo)[0];
 			}
 			catch (vk::SystemError err) {
-				throw std::exception(err.what());
+				throw std::runtime_error(err.what());
 			}
 		}
 	}
@@ -222,7 +222,7 @@ namespace nihil::graphics {
 			commandBuffer = engine->logicalDevice.allocateCommandBuffers(commandBufferAllocInfo)[0];
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 	}
 
@@ -248,7 +248,7 @@ namespace nihil::graphics {
 				swapchainBundle.frames[i].frameBuffer = engine->logicalDevice.createFramebuffer(framebufferInfo);
 			}
 			catch (vk::SystemError err) {
-				throw std::exception(err.what());
+				throw std::runtime_error(err.what());
 			}
 		}
 	}
@@ -316,7 +316,7 @@ namespace nihil::graphics {
 			}
 		}
 
-		throw std::exception("Failed to find suitable memory type!");
+		throw std::runtime_error("Failed to find suitable memory type!");
 	}
 
 	void Renderer::CreateImageViews()

@@ -6,7 +6,7 @@ App::App(AppCreationArgs* args)
 {
 	if (!glfwInit()) {
 		std::cerr << "Failed to initialize GLFW" << std::endl;
-		throw std::exception("Failed to initialize GLFW");
+		throw std::runtime_error("Failed to initialize GLFW");
 	}
 	std::cout << "still here" << std::endl;
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);

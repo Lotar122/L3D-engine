@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <cstring>
+#include <cstdint>
 
 uint64_t nihil::nstd::generateChecksum(const std::string path) 
 {

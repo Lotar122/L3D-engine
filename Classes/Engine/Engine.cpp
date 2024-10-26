@@ -13,6 +13,7 @@
 using namespace nihil::graphics;
 
 void Engine::Draw(Camera& camera) {
+	std::cout<<"Called engine->Draw(Camera&)"<<std::endl;
 	renderer->Draw(camera);
 	commandDataManager.reset();
 }
@@ -118,7 +119,7 @@ void Engine::CreateRenderPass(SwapChainBundle* swapchainBundle)
 		std::cerr << RED << "[###]" << RESET << std::endl;
 		this->error = true;
 		this->finishPipelineSetup();
-		throw std::exception(err.what());
+		throw std::runtime_error(err.what());
 	}
 	std::cout << GREEN << "[###]" << RESET << std::endl;
 }
@@ -186,7 +187,7 @@ Engine::~Engine()
 
 void Engine::Setup(bool validation)
 {
-	if (app == NULL) { std::cerr << "App is nullptr" << std::endl; throw std::exception("App is nullptr"); }
+	if (app == NULL) { std::cerr << "App is nullptr" << std::endl; throw std::runtime_error("App is nullptr"); }
 	//SetupDeafult();
 
 	VulkanInstanceCreateInfo instanceInfo = {};

@@ -1,9 +1,35 @@
-#pragma once
+#ifndef FS_HED
+#define FS_HED
+
 #include <iostream>
 #include <fstream>
+#include <string>
 
-namespace nihil {
-    namespace nstd {
-        std::string LoadFile(std::string& path);
+namespace nihil::nstd {
+        static std::string LoadFile(std::string& path)
+        {
+            // Specify the file path
+            std::string filepath = path;
+
+            // Open the file
+            std::ifstream file(filepath);
+
+            // Check if the file is open
+            if (file.is_open()) {
+                // Read the contents of the file into a string
+                std::string fileContent((std::istreambuf_iterator<char>(file)),
+                                        std::istreambuf_iterator<char>());
+
+                // Close the file
+                file.close();
+
+                // Display the content of the string
+                return fileContent;
+            }
+            else {
+                std::cerr << "Unable to open file: " << filepath << std::endl;
+                std::abort();
+            }
+        }
     }
-}
+#endif

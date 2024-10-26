@@ -6,11 +6,17 @@
 namespace nihil::graphics {
 	void Renderer::Draw(Camera& camera)
 	{
+		std::cout<<"renderer->Draw(Camera&) called"<<std::endl;
 		//if (lastFrameTime != std::chrono::steady_clock::time_point()) lastFrameTime = std::chrono::high_resolution_clock::now();
-		auto frameStartTime = std::chrono::high_resolution_clock::now();
-		auto elapsedTime = frameStartTime - lastFrameTime;
+		if(!engine || !engine->logicalDevice)
+		{
+			std::cerr<<"engine* or engine->logicalDevice* was invalid"<<std::endl;
+			throw std::runtime_error("engine* or engine->logicalDevice* was invalid");
+		}
+		std::cout<<engine<<"  "<<engine->logicalDevice<<std::endl;
 		engine->logicalDevice.waitForFences(1, &swapchainBundle.frames[frameNumber].inFlightFence, VK_TRUE, UINT64_MAX);
-		uint32_t imageIndex{ 0 };
+		std::cout<<"After waiting for fences"<<std::endl;
+		uint32_t imageIndex = 0;
 
 		try {
 			vk::ResultValue acquire = engine->logicalDevice.acquireNextImageKHR(swapchainBundle.swapchain, UINT64_MAX, swapchainBundle.frames[frameNumber].imageAvailable, nullptr);
@@ -20,6 +26,8 @@ namespace nihil::graphics {
 			RecreateSwapchain();
 			return;
 		}
+
+		std::cout<<"Acquired the image"<<std::endl;
 
 		vk::CommandBuffer commandBuffer = swapchainBundle.frames[imageIndex].commandBuffer;
 
@@ -31,7 +39,7 @@ namespace nihil::graphics {
 			commandBuffer.begin(beginInfo);
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 
 		clearScreen(commandBuffer, clearScreenPass, swapchainBundle.frames[imageIndex].frameBuffer, swapchainBundle.extent);
@@ -42,7 +50,7 @@ namespace nihil::graphics {
 			commandBuffer.end();
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 
 		vk::SubmitInfo submitinfo = {};
@@ -62,7 +70,7 @@ namespace nihil::graphics {
 			graphicsQueue.submit(submitinfo, swapchainBundle.frames[frameNumber].inFlightFence);
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 		vk::PresentInfoKHR presentInfo = {};
 		presentInfo.waitSemaphoreCount = 1;
@@ -86,22 +94,6 @@ namespace nihil::graphics {
 		}
 
 		frameNumber = (frameNumber + 1) % maxFramesInFlight;
-
-		// Measure frame end time and calculate the time to sleep
-		auto frameEndTime = std::chrono::high_resolution_clock::now();
-		auto frameTime = frameEndTime - frameStartTime;
-		std::cout << frameEndTime.time_since_epoch() << " " << frameStartTime.time_since_epoch() << std::endl;
-
-		if (frameTime < engine->frameDuration) {
-			//std::this_thread::sleep_for(engine->frameDuration - frameTime);
-			std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(engine->frameDuration - frameTime) << std::endl;
-		}
-
-		double fps = (double)1 / ((double)std::chrono::duration_cast<std::chrono::nanoseconds>(frameTime).count() / (double)1000.0f / (double)1000.0f);
-		std::cout << (double)1 / ((double)std::chrono::duration_cast<std::chrono::nanoseconds>(frameTime).count() / (double)1000.0f / (double)1000.0f) << engine->frameDuration << std::endl;
-		glfwSetWindowTitle(engine->app->get->window, ("FPS Counter - " + std::to_string(static_cast<int>(fps)) + " FPS").c_str());
-
-		lastFrameTime = frameStartTime;
 	}
 	uint64_t count;
 	void Renderer::executeCommandQueue(std::vector<DrawCommand>* commandQueue, vk::CommandBuffer& commandBuffer, uint32_t imageIndex, Camera& camera)

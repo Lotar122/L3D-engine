@@ -26,7 +26,7 @@ namespace nihil::nstd
 		T* allocate()
 		{
 			uint64_t objectSize = sizeof(T);
-			if (!(offset + objectSize < size)) { throw std::exception("Arena out of memory"); return NULL; }
+			if (!(offset + objectSize < size)) { throw std::runtime_error("Arena out of memory"); return NULL; }
 			uint64_t oldOffset = offset;
 			offset += objectSize;
 			return reinterpret_cast<T*>((char*)mem + oldOffset);
@@ -34,7 +34,7 @@ namespace nihil::nstd
 
 		void* allocate(uint64_t objectSize)
 		{
-			if (!(offset + objectSize < size)) { throw std::exception("Arena out of memory"); return NULL; }
+			if (!(offset + objectSize < size)) { throw std::runtime_error("Arena out of memory"); return NULL; }
 			uint64_t oldOffset = offset;
 			offset += objectSize;
 			return reinterpret_cast<void*>((char*)mem + oldOffset);
@@ -77,7 +77,7 @@ namespace nihil::nstd
 
 		void* allocate()
 		{
-			if (offset + blockSize > numBlocks * blockSize) { throw std::exception("Memory pool out of memory"); return NULL; }
+			if (offset + blockSize > numBlocks * blockSize) { throw std::runtime_error("Memory pool out of memory"); return NULL; }
 			uint64_t oldOffset = offset;
 			offset += blockSize;
 			return reinterpret_cast<void*>((char*)mem + oldOffset);
@@ -131,7 +131,7 @@ namespace nihil::nstd
 
 		T* allocate()
 		{
-			if (offset + blockSize > blockSize * numBlocks) { throw std::exception("Object pool out of memory"); return NULL; }
+			if (offset + blockSize > blockSize * numBlocks) { throw std::runtime_error("Object pool out of memory"); return NULL; }
 			uint64_t oldOffset = offset;
 			offset += blockSize;
 			void* res = reinterpret_cast<void*>((char*)mem + oldOffset);

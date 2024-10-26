@@ -251,7 +251,7 @@ namespace nihil::graphics
 			std::cout << RED << "[###]" << RESET << std::endl;
 			this->error = true;
 			this->finishPipelineSetup();
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 		std::cout << GREEN << "[###]" << RESET << std::endl;
 
@@ -269,7 +269,7 @@ namespace nihil::graphics
 		catch (vk::SystemError err) {
 			this->error = true;
 			this->finishPipelineSetup();
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 		this->finishPipelineSetup();
 
@@ -291,7 +291,7 @@ namespace nihil::graphics
 		pipelineStorage.push_back(pipeline);
 		if (pipeline != pipelineStorage[index])
 		{
-			throw std::exception("An unexpected error occured during registering the pipeline");
+			throw std::runtime_error("An unexpected error occured during registering the pipeline");
 		}
 		return index;
 	}
@@ -386,7 +386,7 @@ namespace nihil::graphics
 			out = this->logicalDevice.createRenderPass(renderpassInfo);
 		}
 		catch (vk::SystemError err) {
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 
 		return out;

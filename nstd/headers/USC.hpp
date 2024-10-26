@@ -3,6 +3,9 @@
 #include "ScreenRatio.hpp"
 #include "WidthHeightEnum.hpp"
 
+#include <cstdint>
+#include <cmath>
+
 namespace nihil {
 	namespace nstd {
 		class USC

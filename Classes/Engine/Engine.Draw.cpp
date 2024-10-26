@@ -25,7 +25,6 @@ namespace nihil::graphics
 	)
 	{
 		InstancedDrawData* data = commandDataManager.allocate<InstancedDrawData>();
-		*data = InstancedDrawData();
 		std::cout << "DataP: " << data << std::endl;
 		data->model = model;
 		data->instanceBuffer = instanceBuffer;
@@ -36,6 +35,8 @@ namespace nihil::graphics
 		drawCommand.targetPipeline = pipeline;
 
 		commandQueue.push_back(drawCommand);
+
+		std::cout<<"Queueing finished"<<std::endl;
 	}
 
 	void Engine::queueBufferDraw(
@@ -45,7 +46,6 @@ namespace nihil::graphics
 	)
 	{
 		BufferDrawData* data = commandDataManager.allocate<BufferDrawData>();
-		*data = BufferDrawData();
 		data->indexBuffer = indexBuffer;
 		data->vertexBuffer = vertexBuffer;
 
@@ -63,7 +63,6 @@ namespace nihil::graphics
 	)
 	{
 		ModelDrawData* data = commandDataManager.allocate<ModelDrawData>();
-		*data = ModelDrawData();
 		data->model = model;
 
 		DrawCommand drawCommand = {};

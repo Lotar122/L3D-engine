@@ -35,7 +35,7 @@ namespace nihil::nstd {
 		std::string res;
 		for (int i = 0; i < vec.size(); i++)
 		{
-			res += '/n';
+			res += '\n';
 			res += std::to_string(vec[i]);
 		}
 

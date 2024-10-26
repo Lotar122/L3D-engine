@@ -27,7 +27,7 @@ namespace nihil::graphics {
 			engine->error = true;
 			engine->finishPipelineSetup();
 			engine->finishSetup();
-			throw std::exception(err.what());
+			throw std::runtime_error(err.what());
 		}
 		std::cout << GREEN << "[###]" << RESET << std::endl;
 

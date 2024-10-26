@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstring>
+#include <cstdint>
 
 namespace nihil::nstd {
     uint64_t generateChecksum(const std::string path);

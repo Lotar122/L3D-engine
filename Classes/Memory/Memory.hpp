@@ -10,7 +10,7 @@ namespace nihil::graphics {
 	class Memory
 	{
 	public:
-		static BufferData& CreateBuffer(uint32_t size, vk::BufferUsageFlags usage, Engine* engine);
+		static BufferData CreateBuffer(uint32_t size, vk::BufferUsageFlags usage, Engine* engine);
 
 		static uint32_t FindMemoryTypeIndex(Engine* engine, uint32_t supportedMemoryIndex, vk::MemoryPropertyFlags properties);
 

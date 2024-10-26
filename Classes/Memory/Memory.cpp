@@ -2,7 +2,7 @@
 #include "Classes/Engine/Engine.hpp"
 
 namespace nihil::graphics {
-	BufferData& Memory::CreateBuffer(uint32_t size, vk::BufferUsageFlags usage, Engine* engine)
+	BufferData Memory::CreateBuffer(uint32_t size, vk::BufferUsageFlags usage, Engine* engine)
 	{
 		vk::BufferCreateInfo createInfo = {};
 		createInfo.flags = vk::BufferCreateFlags();
@@ -12,7 +12,9 @@ namespace nihil::graphics {
 
 		BufferData buffer;
 		buffer.buffer = engine->get->logicalDevice->createBuffer(createInfo);
+		std::cout<<"Allocating the actual buffer Memory"<<std::endl;
 		AllocateBufferMemory(buffer, engine);
+		std::cout<<"Allocation successful"<<std::endl;
 
 		return buffer;
 	}
