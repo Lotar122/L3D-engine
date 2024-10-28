@@ -27,9 +27,15 @@ target_include_directories(nihil-render
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lib)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/nstd)
 
+if(UNIX AND NOT APPLE)
 target_link_libraries(nihil-render PUBLIC
 	libnstd
 )
+else()
+target_link_libraries(nihil-render PUBLIC
+	nstd
+)
+endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET nihil-render PROPERTY CXX_STANDARD 20)
