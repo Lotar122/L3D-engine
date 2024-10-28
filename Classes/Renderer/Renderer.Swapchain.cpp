@@ -10,6 +10,7 @@ namespace nihil::graphics {
 		vk::Extent2D extent;
 
 		support.capabilities = engine->device.getSurfaceCapabilitiesKHR(engine->surface);
+		auto capabilities = engine->device.getSurfaceCapabilitiesKHR(engine->surface);
 		support.formats = engine->device.getSurfaceFormatsKHR(engine->surface);
 		support.presentModes = engine->device.getSurfacePresentModesKHR(engine->surface);
 
@@ -57,13 +58,28 @@ namespace nihil::graphics {
 			);
 		}
 
-		uint8_t imageCount = std::min(
-			support.capabilities.maxImageCount,
-			support.capabilities.minImageCount + (int)createInfo.preferredBuffering
-		);
-		if (imageCount >= 3) {
-			imageCount = 3;
+		uint8_t imageCount = 0;
+		if(support.capabilities.maxImageCount == 0)
+		{
+			imageCount = std::max<int>(
+				support.capabilities.minImageCount,
+				(int)createInfo.preferredBuffering
+			);
 		}
+		else if(support.capabilities.minImageCount > (int)createInfo.preferredBuffering)
+		{
+			imageCount = support.capabilities.minImageCount;
+		}
+		else
+		{
+			imageCount = std::min<int>(
+				static_cast<uint32_t>(support.capabilities.maxImageCount),
+				(int)createInfo.preferredBuffering
+			);
+		}
+
+		std::cout<<"minImageCount: "<<support.capabilities.minImageCount<<" maxImageCount: "<<support.capabilities.maxImageCount<<std::endl;
+		std::cout<<"minImageCount: "<<capabilities.minImageCount<<" maxImageCount: "<<capabilities.maxImageCount<<std::endl;
 
 		vk::SwapchainCreateInfoKHR swapchainCreateInfo = vk::SwapchainCreateInfoKHR(
 			vk::SwapchainCreateFlagsKHR(), engine->surface, imageCount, surfaceFormat.format, surfaceFormat.colorSpace,
