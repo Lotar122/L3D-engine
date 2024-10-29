@@ -222,25 +222,45 @@ namespace nihil::graphics {
 
 		count++;
 
-		ObjectData data = {};
-
-		data.proj = camera->getProjectionMatrix();
-		data.view = camera->getViewMatrix();
-		data.pre = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-		data.pre = data.pre * model->deafultTransform;
-
-		if (model != NULL)
+		if(engine->bigPushConstants)
 		{
-			data.pre = data.pre * model->deafultTransform;
+			BigObjectData data = {};
+
+			data.proj = camera->getProjectionMatrix();
+			data.view = camera->getViewMatrix();
+			data.pre = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+			if (model != NULL)
+			{
+				data.pre = data.pre * model->deafultTransform;
+			}
+			else
+			{
+				data.pre = data.pre;
+			}
+
+			vk::PipelineLayout layout = pBundle->layout;
+			_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(BigObjectData), &data);
 		}
 		else
 		{
-			data.pre = data.pre;
-		}
+			SmallObjectData data = {};
+			data.proj = camera->getProjectionMatrix();
+			data.pre = camera->getViewMatrix();
+			data.pre = glm::rotate(data.pre, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-		vk::PipelineLayout layout = pBundle->layout;
-		_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(ObjectData), &data);
+			if (model != NULL)
+			{
+				data.pre = data.pre * model->deafultTransform;
+			}
+			else
+			{
+				data.pre = data.pre;
+			}
+
+			vk::PipelineLayout layout = pBundle->layout;
+			_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(SmallObjectData), &data);
+		}
 
 		_commandBuffer.drawIndexed(static_cast<uint32_t>(_indexBuffer->Data.size()), 1, 0, 0, 0);
 	}
@@ -267,18 +287,45 @@ namespace nihil::graphics {
 
 		count++;
 
-		ObjectData data = {};
+		if(engine->bigPushConstants)
+		{
+			BigObjectData data = {};
 
-		//std::cout << swapchainBundle.extent.width << " " << swapchainBundle.extent.height << " " << (float)swapchainBundle.extent.width / (float)swapchainBundle.extent.height << std::endl;
+			data.proj = camera->getProjectionMatrix();
+			data.view = camera->getViewMatrix();
+			data.pre = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-		data.proj = camera->getProjectionMatrix();
-		data.view = camera->getViewMatrix();
-		data.pre = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			if (model != NULL)
+			{
+				data.pre = data.pre * model->deafultTransform;
+			}
+			else
+			{
+				data.pre = data.pre;
+			}
 
-		data.pre = data.pre * model->deafultTransform;
+			vk::PipelineLayout layout = pBundle->layout;
+			_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(BigObjectData), &data);
+		}
+		else
+		{
+			SmallObjectData data = {};
+			data.proj = camera->getProjectionMatrix();
+			data.pre = camera->getViewMatrix();
+			//data.pre = glm::rotate(data.pre, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-		vk::PipelineLayout layout = pBundle->layout;
-		_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(ObjectData), &data);
+			if (model != NULL)
+			{
+				data.pre = data.pre * model->deafultTransform;
+			}
+			else
+			{
+				data.pre = data.pre;
+			}
+
+			vk::PipelineLayout layout = pBundle->layout;
+			_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(SmallObjectData), &data);
+		}
 
 		//std::cout << std::floor(instanceBuffer->Data.size() / 16) << " floored shit " << instanceBuffer->Data.size() << std::endl;
 
@@ -303,25 +350,45 @@ namespace nihil::graphics {
 
 		count++;
 
-		ObjectData data = {};
-
-		data.proj = camera->getProjectionMatrix();
-		data.view = camera->getViewMatrix();
-		data.pre = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-		data.pre = data.pre * model->deafultTransform;
-
-		if (model != NULL)
+		if(engine->bigPushConstants)
 		{
-			data.pre = data.pre * model->deafultTransform;
+			BigObjectData data = {};
+
+			data.proj = camera->getProjectionMatrix();
+			data.view = camera->getViewMatrix();
+			data.pre = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+			if (model != NULL)
+			{
+				data.pre = data.pre * model->deafultTransform;
+			}
+			else
+			{
+				data.pre = data.pre;
+			}
+
+			vk::PipelineLayout layout = pBundle->layout;
+			_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(BigObjectData), &data);
 		}
 		else
 		{
-			data.pre = data.pre;
-		}
+			SmallObjectData data = {};
+			data.proj = camera->getProjectionMatrix();
+			data.pre = camera->getViewMatrix();
+			data.pre = glm::rotate(data.pre, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-		vk::PipelineLayout layout = pBundle->layout;
-		_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(ObjectData), &data);
+			if (model != NULL)
+			{
+				data.pre = data.pre * model->deafultTransform;
+			}
+			else
+			{
+				data.pre = data.pre;
+			}
+
+			vk::PipelineLayout layout = pBundle->layout;
+			_commandBuffer.pushConstants(layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(SmallObjectData), &data);
+		}
 
 		_commandBuffer.drawIndexed(static_cast<uint32_t>(model->iBuffer->Data.size()), 1, 0, 0, 0);
 	}

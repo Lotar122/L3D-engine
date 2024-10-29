@@ -78,6 +78,11 @@ namespace nihil::graphics {
 		};
 
 	public:
+        bool bigPushConstants = false;
+		inline void useBigPushConstants(bool val) {bigPushConstants = val;};
+		inline void useBigPushConstants() {bigPushConstants = true;};
+		inline void useSmallPushConstants() {bigPushConstants = false;};
+
 		App* app = NULL;
 		bool shouldClose = false;
 		bool debug = false;

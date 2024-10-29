@@ -239,7 +239,10 @@ namespace nihil::graphics
 
 		vk::PushConstantRange pushConstantInfo = {};
 		pushConstantInfo.offset = 0;
-		pushConstantInfo.size = sizeof(ObjectData);
+
+		if(bigPushConstants) pushConstantInfo.size = sizeof(BigObjectData);
+		else pushConstantInfo.size = sizeof(SmallObjectData);
+		
 		pushConstantInfo.stageFlags = vk::ShaderStageFlagBits::eVertex;
 
 		layoutInfo.pPushConstantRanges = &pushConstantInfo;
